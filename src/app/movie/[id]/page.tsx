@@ -1,126 +1,64 @@
-// src/app/movie/[id]/page.tsx
+"use client";
+
+import React from "react";
 import Image from "next/image";
-import { tmdbImg, getMovieAndCredits } from "@/lib/tmdb";
+import { getMovieAndCredits, tmdbImg } from "@/lib/tmdb";
 
-type MovieDetails = {
-  id: number;
-  title: string;
-  overview: string;
-  poster_path: string | null;
-  release_date?: string;
-  vote_average?: number;
-};
+export default async function MoviePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
 
-type CastMember = {
-  id: number;
-  name: string;
-  character: string;
-  profile_path: string | null;
-};
+  const { id } = await params;
 
-export default async function MoviePage({ params }: { params: { id: string } }) {
-  const { details: movie, cast } = await getMovieAndCredits(params.id);
+
+  const { details: movie, cast } = await getMovieAndCredits(id);
 
   return (
     <main
       style={{
-        backgroundColor: "#000",
-        color: "#fff",
+        backgroundColor: "#121212",
+        color: "#f5f5f5",
         minHeight: "100vh",
-        padding: "40px",
+        padding: "20px",
       }}
     >
-      <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-        <div style={{ display: "flex", gap: "30px", flexWrap: "wrap" }}>
-          {/* Poster */}
-          {movie.poster_path && (
-            <Image
-              src={tmdbImg(movie.poster_path, "w500")}
-              alt={movie.title}
-              width={300}
-              height={450}
-              style={{
-                borderRadius: "12px",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.6)",
-              }}
-            />
-          )}
-
-          {/* Info */}
-          <div style={{ flex: 1, minWidth: "300px" }}>
-            {/* Title */}
-            <h1
-              style={{
-                fontSize: "36px",
-                fontWeight: "bold",
-                marginBottom: "10px",
-                fontFamily: "Times New Roman, serif",
-              }}
-            >
-              {movie.title}
-            </h1>
-
-            {/* Year + Rating */}
-            <p style={{ fontSize: "18px", opacity: 0.8, marginBottom: "15px" }}>
-              📅 {movie.release_date?.slice(0, 4) || "—"} &nbsp; | &nbsp; ⭐{" "}
-              {movie.vote_average?.toFixed(1) || "N/A"}/10
-            </p>
-
-            {/* Overview */}
-            <p
-              style={{
-                fontSize: "18px",
-                lineHeight: "1.6",
-                marginBottom: "20px",
-                fontFamily: "Times New Roman, serif",
-              }}
-            >
-              {movie.overview || "No description available."}
-            </p>
-          </div>
-        </div>
-
-        {/* Cast */}
-        <h2
+      <div style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
+        {/* Poster */}
+        <Image
+          src={
+            movie.poster_path
+              ? tmdbImg(movie.poster_path, "w500")
+              : "/black-poster.png"
+          }
+          alt={movie.title}
+          width={300}
+          height={450}
           style={{
-            marginTop: "40px",
-            marginBottom: "15px",
-            fontSize: "28px",
-            fontWeight: "bold",
-            fontFamily: "Times New Roman, serif",
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
+            objectFit: "cover",
           }}
-        >
-          🎭 Cast
-        </h2>
-        <div style={{ display: "flex", gap: "15px", overflowX: "auto" }}>
-          {cast.slice(0, 8).map((actor: CastMember) => (
-            <div
-              key={actor.id}
-              style={{ width: "120px", textAlign: "center", flexShrink: 0 }}
-            >
-              <Image
-                src={
-                  actor.profile_path
-                    ? tmdbImg(actor.profile_path, "w200")
-                    : "/black-poster.png"
-                }
-                alt={actor.name}
-                width={120}
-                height={160}
-                style={{
-                  borderRadius: "8px",
-                  objectFit: "cover",
-                  marginBottom: "6px",
-                }}
-              />
-              <p style={{ fontSize: "0.9rem", fontWeight: "600" }}>
-                {actor.name}
-              </p>
-              <p style={{ fontSize: "0.8rem", opacity: 0.7 }}>
-                as {actor.character}
-              </p>
-            </div>
-          ))}
+        />
+
+        {/* Movie Info */}
+        <div>
+          <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>{movie.title}</h1>
+          <p style={{ opacity: 0.8, marginBottom: "10px" }}>
+            {movie.release_date?.slice(0, 4) ?? "—"} •{" "}
+            {movie.runtime ? `${movie.runtime} min` : "N/A"}
+          </p>
+          <p style={{ marginBottom: "20px" }}>{movie.overview}</p>
+
+          <h2 style={{ fontSize: "1.2rem", marginBottom: "10px" }}>Cast</h2>
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            {cast.slice(0, 10).map((actor: any) => (
+              <li key={actor.cast_id} style={{ marginBottom: "6px" }}>
+                {actor.name} as {actor.character}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </main>

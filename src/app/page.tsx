@@ -14,13 +14,21 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
+
+type Movie = {
+  id: number;
+  title: string;
+  original_language: string;
+  poster_path: string | null;
+  release_date?: string;
+};
+
 export default function Home() {
   const [search, setSearch] = useState("");
-  const [movies, setMovies] = useState<any[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const favorites = useSelector((state: RootState) => state.favorites);
   const dispatch = useDispatch();
 
-  // load movies on first render
   useEffect(() => {
     let canceled = false;
     fetchTrendingMovies()
@@ -35,7 +43,7 @@ export default function Home() {
     };
   }, []);
 
-  // debounce search changes
+  
   useEffect(() => {
     const t = setTimeout(() => {
       (async () => {
@@ -110,7 +118,7 @@ export default function Home() {
         }}
       >
         {movies
-          // ✅ remove duplicates by title
+         
           .filter(
             (m, index, self) =>
               index ===
@@ -118,11 +126,11 @@ export default function Home() {
                 (x) => x.title?.toLowerCase() === m.title?.toLowerCase()
               )
           )
-          // ✅ keep only English, Hindi, Tamil, Telugu, Malayalam
+          
           .filter((m) =>
             ["en", "hi", "ta", "te", "ml"].includes(m.original_language)
           )
-          // ✅ remove the movie "Together"
+ 
           .filter((m) => m.title?.toLowerCase() !== "together")
           .map((movie) => (
             <div
@@ -141,7 +149,7 @@ export default function Home() {
                   src={
                     movie.poster_path
                       ? tmdbImg(movie.poster_path, "w500")
-                      : "/black-poster.png" // 👈 fallback if no poster
+                      : "/black-poster.png" 
                   }
                   alt={movie.title}
                   width={300}
@@ -153,7 +161,7 @@ export default function Home() {
                   }}
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src =
-                      "/black-poster.png"; // 👈 fallback if image fails
+                      "/black-poster.png"; 
                   }}
                 />
               </Link>

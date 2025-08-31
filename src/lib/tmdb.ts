@@ -1,11 +1,11 @@
-// src/lib/tmdb.ts
+
 
 // Build TMDB image URL
 export function tmdbImg(path: string, size: string = "w500") {
   return `https://image.tmdb.org/t/p/${size}${path}`;
 }
 
-// 🔹 Fetch movie details + credits
+//movie details + credits
 export async function getMovieAndCredits(id: string) {
   const apiKey = process.env.NEXT_PUBLIC_TMDB_KEY;
 
@@ -33,7 +33,6 @@ export async function getMovieAndCredits(id: string) {
   return { details, cast: credits.cast };
 }
 
-// 🔹 Get trending movies
 export async function fetchTrendingMovies() {
   const apiKey = process.env.NEXT_PUBLIC_TMDB_KEY;
 
@@ -53,7 +52,7 @@ export async function fetchTrendingMovies() {
   return res.json(); // { page, results, total_pages, total_results }
 }
 
-// 🔹 Search movies by query
+
 export async function searchMovies(query: string) {
   const apiKey = process.env.NEXT_PUBLIC_TMDB_KEY;
 

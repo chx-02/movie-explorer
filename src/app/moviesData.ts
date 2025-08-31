@@ -5,4 +5,3 @@ export const movies = [
   { id: 4, title: "Tenet", year: 2020 },
   { id: 5, title: "Dunkirk", year: 2017 },
 ];
-.
