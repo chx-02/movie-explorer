@@ -14,7 +14,6 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-
 type Movie = {
   id: number;
   title: string;
@@ -43,7 +42,6 @@ export default function Home() {
     };
   }, []);
 
-  
   useEffect(() => {
     const t = setTimeout(() => {
       (async () => {
@@ -73,7 +71,7 @@ export default function Home() {
         padding: "20px",
       }}
     >
-      {/* Title + Search in the center */}
+      {/* Title + Search */}
       <div
         style={{
           textAlign: "center",
@@ -118,7 +116,6 @@ export default function Home() {
         }}
       >
         {movies
-         
           .filter(
             (m, index, self) =>
               index ===
@@ -126,11 +123,9 @@ export default function Home() {
                 (x) => x.title?.toLowerCase() === m.title?.toLowerCase()
               )
           )
-          
           .filter((m) =>
             ["en", "hi", "ta", "te", "ml"].includes(m.original_language)
           )
- 
           .filter((m) => m.title?.toLowerCase() !== "together")
           .map((movie) => (
             <div
@@ -149,7 +144,7 @@ export default function Home() {
                   src={
                     movie.poster_path
                       ? tmdbImg(movie.poster_path, "w500")
-                      : "/black-poster.png" 
+                      : "/black-poster.png"
                   }
                   alt={movie.title}
                   width={300}
@@ -161,7 +156,7 @@ export default function Home() {
                   }}
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src =
-                      "/black-poster.png"; 
+                      "/black-poster.png";
                   }}
                 />
               </Link>

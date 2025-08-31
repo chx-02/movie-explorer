@@ -1,17 +1,19 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import { getMovieAndCredits, tmdbImg } from "@/lib/tmdb";
 
+interface CastMember {
+  cast_id: number;
+  name: string;
+  character: string;
+}
+
 export default async function MoviePage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-
-  const { id } = await params;
-
+  const { id } = params;
 
   const { details: movie, cast } = await getMovieAndCredits(id);
 
@@ -44,7 +46,9 @@ export default async function MoviePage({
 
         {/* Movie Info */}
         <div>
-          <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>{movie.title}</h1>
+          <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>
+            {movie.title}
+          </h1>
           <p style={{ opacity: 0.8, marginBottom: "10px" }}>
             {movie.release_date?.slice(0, 4) ?? "—"} •{" "}
             {movie.runtime ? `${movie.runtime} min` : "N/A"}
@@ -53,7 +57,7 @@ export default async function MoviePage({
 
           <h2 style={{ fontSize: "1.2rem", marginBottom: "10px" }}>Cast</h2>
           <ul style={{ listStyle: "none", padding: 0 }}>
-            {cast.slice(0, 10).map((actor: any) => (
+            {cast.slice(0, 10).map((actor: CastMember) => (
               <li key={actor.cast_id} style={{ marginBottom: "6px" }}>
                 {actor.name} as {actor.character}
               </li>

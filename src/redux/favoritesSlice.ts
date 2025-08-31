@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Movie {
   id: number;
   title: string;
+  year?: string; // added so it matches your Home.tsx
 }
 
 const favoritesSlice = createSlice({
