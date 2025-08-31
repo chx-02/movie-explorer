@@ -6,7 +6,7 @@ import { addFavorite, removeFavorite, clearFavorites } from "../redux/favoritesS
 
 export default function FavoritesTest() {
   const dispatch = useDispatch();
-  const favorites = useSelector((state: RootState) => state.favorites); // string[]
+  const favorites = useSelector((state: RootState) => state.favorites); 
 
   const sampleMovie = "Inception";
 
@@ -14,8 +14,8 @@ export default function FavoritesTest() {
     <div className="p-6">
       <h1 className="text-xl font-bold mb-4">Favorites Test</h1>
 
-      <button onClick={() => dispatch(addFavorite(sampleMovie))}>Add "Inception"</button>
-      <button onClick={() => dispatch(removeFavorite(sampleMovie))}>Remove "Inception"</button>
+      <button onClick={() => dispatch(addFavorite(sampleMovie))}>Add 'Inception'</button>
+      <button onClick={() => dispatch(removeFavorite(sampleMovie))}>Remove 'Inception'</button>
       <button onClick={() => dispatch(clearFavorites())}>Clear All</button>
 
       <div className="mt-6">
